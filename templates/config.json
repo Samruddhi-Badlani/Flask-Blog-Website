@@ -1,0 +1,17 @@
+{
+    "params":
+    {
+        "local_server":"True",
+        "local_uri":"mysql://root:@localhost/postsapp",
+        "prod_uri":"mysql://root:@localhost/postsapp",
+        "hackerrank_uri":"https://www.hackerrank.com/samruddhi_09",
+        "github_uri":"https://github.com/Samruddhi-Badlani",
+        "linkedin_uri":"https://www.linkedin.com/in/samruddhi-badlani-872262193/",
+        "no_of_posts":2,
+        "blog_name":"Samruddhi's Blog Channel",
+        "admin_email":"admin_email_id_here@gmail.com",
+        "admin_pass":"admin_password_here",
+        "upload_location" :"your_upload_location"
+       
+    }
+}
