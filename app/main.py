@@ -8,7 +8,7 @@ from datetime import date, datetime
 from werkzeug.utils import secure_filename
 
 local_server = True
-with open(os.getcwd() +'\\app\\templates\\config.json','r') as c:
+with open(os.getcwd() +'templates\\config.json','r') as c:
     params= json.load(c)["params"];
 
 
