@@ -14,11 +14,11 @@ from werkzeug.utils import secure_filename
 from sqlalchemy.sql.elements import Null
 
 app = Flask(__name__)
-local_server = True
+local_server = False
 params={
         "local_server":"True",
         "local_uri":"postgresql://postgres:root@localhost:5432/blogapp",
-        "prod_uri":"mysql://root:@localhost/postsapp",
+        "prod_uri":"postgresql://fdgzcmqclwmihe:4cbb4d1e9b93cdb6accf6969587fd733663f055e5dd92b62e336c29608e7d64a@ec2-3-213-76-170.compute-1.amazonaws.com:5432/dbm28fbdipl0gk",
         "hackerrank_uri":"https://www.hackerrank.com/samruddhi_09",
         "github_uri":"https://github.com/Samruddhi-Badlani",
         "linkedin_uri":"https://www.linkedin.com/in/samruddhi-badlani-872262193/",
