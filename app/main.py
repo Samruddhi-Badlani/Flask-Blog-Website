@@ -7,9 +7,6 @@ from datetime import date, datetime
 
 from werkzeug.utils import secure_filename
 
-local_server = True
-with open(os.getcwd() +'/templates/config.json','r') as c:
-    params= json.load(c)["params"];
 
 
 
@@ -17,7 +14,21 @@ with open(os.getcwd() +'/templates/config.json','r') as c:
 from sqlalchemy.sql.elements import Null
 
 app = Flask(__name__)
-
+local_server = True
+params={
+        "local_server":"True",
+        "local_uri":"postgresql://postgres:root@localhost:5432/blogapp",
+        "prod_uri":"mysql://root:@localhost/postsapp",
+        "hackerrank_uri":"https://www.hackerrank.com/samruddhi_09",
+        "github_uri":"https://github.com/Samruddhi-Badlani",
+        "linkedin_uri":"https://www.linkedin.com/in/samruddhi-badlani-872262193/",
+        "no_of_posts":2,
+        "blog_name":"Samruddhi's Blog Channel",
+        "admin_email":"admin_email_id_here@gmail.com",
+        "admin_pass":"admin_password_here",
+        "upload_location" :"your_upload_location"
+       
+    }
 app.config['UPLOAD_LOCATION'] =params['upload_location'];
 app.secret_key = 'super-secret-key'
 
