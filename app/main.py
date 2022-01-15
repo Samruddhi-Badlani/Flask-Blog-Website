@@ -4,7 +4,7 @@ import json
 import os
 import math
 from datetime import date, datetime
-from flask_mail import Mail;
+
 from werkzeug.utils import secure_filename
 
 local_server = True
@@ -212,13 +212,13 @@ def edit(post_id):
         return render_template('edit.html',params=params,posts=posts,post_id=post_id,success_msg = success_msg,post= post)
 
 
-@app.route("/uploader",methods=['GET','POST'])
-def uploader():
-    if 'user' in session and session['user'] == params['admin_email']:
-        if request.method == "POST":
-            myFile = request.files['myFile'];
-            myFile.save(os.path.join(app.config['UPLOAD_LOCATION'],secure_filename(myFile.filename)))
-        return "Uploaded successfully"
+# @app.route("/uploader",methods=['GET','POST'])
+# def uploader():
+#     if 'user' in session and session['user'] == params['admin_email']:
+#         if request.method == "POST":
+#             myFile = request.files['myFile'];
+#             myFile.save(os.path.join(app.config['UPLOAD_LOCATION'],secure_filename(myFile.filename)))
+#         return "Uploaded successfully"
 
 
 @app.route("/logout",methods=['GET','POST'])
