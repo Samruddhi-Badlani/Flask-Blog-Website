@@ -8,7 +8,7 @@ from flask_mail import Mail;
 from werkzeug.utils import secure_filename
 
 local_server = True
-with open('templates/config.json','r') as c:
+with open(os.getcwd() +'\\app\\templates\\config.json','r') as c:
     params= json.load(c)["params"];
 
 
@@ -64,9 +64,9 @@ class Post(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(520), nullable=False)
     content = db.Column(db.String(65000), nullable=False)
-    By = db.Column(db.String(100),nullable = False)
+    by = db.Column(db.String(100),nullable = False)
     slug = db.Column(db.String(200),nullable = False)
-    Date = db.Column(db.Date,nullable = True)
+    date = db.Column(db.Date,nullable = True)
     img_file = db.Column(db.String(300),nullable = False)
     tagline = db.Column(db.String(300),nullable = False)
 
@@ -183,8 +183,8 @@ def edit(post_id):
             box_slug = request.form.get('slug');
             box_content = request.form.get('content');
             box_img_file = request.form.get('img_file');
-            box_By = request.form.get('By');
-            box_Date = request.form.get('Date');
+            box_by = request.form.get('By');
+            box_date = request.form.get('Date');
 
             if post_id != '0':
                 post = Post.query.filter_by(post_id = post_id).first();
@@ -193,15 +193,15 @@ def edit(post_id):
                 post.slug = box_slug;
                 post.content = box_content;
                 post.img_file = box_img_file;
-                post.By = box_By;
-                post.Date = box_Date
+                post.by = box_by;
+                post.date = box_date
 
                 db.session.commit();
 
             
                 success_msg = 'Post edited successfully'
             else:
-                post = Post(title = box_title,tagline = box_tagline,slug = box_slug,content=box_content,img_file=box_img_file,By=box_By,Date=box_Date);
+                post = Post(title = box_title,tagline = box_tagline,slug = box_slug,content=box_content,img_file=box_img_file,by=box_by,date=box_date);
                 db.session.add(post);
                 db.session.commit();
                 success_msg = 'Post Added successfully'
@@ -234,4 +234,3 @@ def delete(post_id):
         db.session.commit();
         return redirect('/dashboard');
 
-app.run(debug=True)

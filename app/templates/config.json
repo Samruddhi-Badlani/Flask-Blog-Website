@@ -2,7 +2,7 @@
     "params":
     {
         "local_server":"True",
-        "local_uri":"mysql://root:@localhost/postsapp",
+        "local_uri":"postgresql://postgres:root@localhost:5432/blogapp",
         "prod_uri":"mysql://root:@localhost/postsapp",
         "hackerrank_uri":"https://www.hackerrank.com/samruddhi_09",
         "github_uri":"https://github.com/Samruddhi-Badlani",
