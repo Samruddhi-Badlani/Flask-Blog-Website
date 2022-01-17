@@ -1,0 +1,55 @@
+{% extends "userLayout.html" %}
+
+
+{% block body %}
+<header class="masthead" style="background-image: url('../static/assets/img/home-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Clear Blog</h1>
+                    <span class="subheading">Blogs by various people on various topics</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main Content-->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+
+            <!-- Post fetched from database  -->
+            <!-- Post preview-->
+        {% for post in posts %}
+        <a href="/post/{{post.slug}}" style="display: block; height: auto;width: auto;">
+            <div class="post-preview">
+                
+                    <h3 class="post-title">{{post.title}}</h2>
+                    
+                
+                <h4 class="post-subtitle">{{post.tagline}}</h3>
+                <p class="post-meta">
+                    Posted by
+                    {{post.By}}
+                    on {{post.Date}}
+                </p>
+            </div>
+            {{post.content[0:150]}}...
+        </a>
+            <!-- Divider-->
+          
+           
+       
+            <!-- Divider-->
+            <hr class="my-4" />
+
+        {% endfor %}
+            <!-- Pager-->
+            <div class="d-flex justify-content-end mb-4 float-left"><a class="btn btn-primary text-uppercase " href="{{prev}}"> &larr; Previous </a></div>
+            <div class="d-flex justify-content-end mb-4 float-right"><a class="btn btn-primary text-uppercase " href="{{next}}"> Next &rarr;</a></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "userLayout.html" %}
 {% block body %}
         <!-- Page Header-->
         {% set fname = '../static/' + post.img_file%}
@@ -13,8 +13,8 @@
                             <h2 class="subheading">{{post.tagline}}</h2>
                             <span class="meta">
                                 Posted by
-                                <a href="#!">{{ post.By }}</a>
-                                on {{ post.Date}}
+                                <a href="#!">{{ post.by }}</a>
+                                on {{ post.date}}
                             </span>
                         </div>
                     </div>

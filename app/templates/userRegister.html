@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>User Register</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/css/login.css">
+    <script>(function (w, d) {
+            !function (e, t, r, a, s) {
+                e[r] = e[r] || {}, e[r].executed = [], e.zaraz = { deferred: [] }; var n = t.getElementsByTagName("title")[0]; e[r].c = t.cookie, n && (e[r].t = t.getElementsByTagName("title")[0].text), e[r].w = e.screen.width, e[r].h = e.screen.height, e[r].j = e.innerHeight, e[r].e = e.innerWidth, e[r].l = e.location.href, e[r].r = t.referrer, e[r].k = e.screen.colorDepth, e[r].n = t.characterSet, e[r].o = (new Date).getTimezoneOffset(),//
+                    e[s] = e[s] || [], e.zaraz._preTrack = [], e.zaraz.track = (t, r) => e.zaraz._preTrack.push([t, r]), e[s].push({ "zaraz.start": (new Date).getTime() }); var i = t.getElementsByTagName(a)[0], o = t.createElement(a); o.defer = !0, o.src = "/cdn-cgi/zaraz/s.js?" + new URLSearchParams(e[r]).toString(), i.parentNode.insertBefore(o, i)
+            }(w, d, "zarazData", "script", "dataLayer");
+        })(window, document);</script>
+</head>
+
+{% set fname = '../static/' + 'assets/img/login-background.jfif' %}
+
+<body class="img js-fullheight" style="background-image:url({{fname}})">
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h2 class="heading-section">User Register</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                    <div class="login-wrap p-0">
+                        <h3 class="mb-4 text-center">Have an account?</h3>
+                        <form action="/userRegister" method="post" class="signin-form">
+                            <div class="form-group">
+                                <input name="useremail" id="useremail" type="email" class="form-control"
+                                    placeholder="Email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input id="username" name="username" type="text" class="form-control" placeholder="Name"
+                                    required>
+                                <span toggle="#password-field"
+                                    class="fa fa-fw fa-eye field-icon toggle-password bi bi-eye-slash"
+                                    id="togglePassword"></span>
+                            </div>
+                            <div class="form-group">
+                                <input id="password-field" name="userpassword" type="password" class="form-control"
+                                    placeholder="Password" required>
+                                <span toggle="#password-field"
+                                    class="fa fa-fw fa-eye field-icon toggle-password bi bi-eye-slash"
+                                    id="togglePassword"></span>
+                            </div>
+                            <div class="form-group">
+                                <input id="password-field" name="userpassword2" type="password" class="form-control"
+                                    placeholder="Confirm Password" required>
+                                <span toggle="#password-field"
+                                    class="fa fa-fw fa-eye field-icon toggle-password bi bi-eye-slash"
+                                    id="togglePassword"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
+                            </div>
+                            <div class="form-group d-md-flex">
+                                <div class="w-50">
+                                    <!-- <label class="checkbox-wrap checkbox-primary">Remember Me -->
+                                        <!-- <input type="checkbox" checked> -->
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <!-- <div class="w-50 text-md-right">
+<a href="#" style="color: #fff">Forgot Password</a>
+</div> -->
+                            </div>
+                        </form>
+                        <!-- <p class="w-100 text-center">&mdash; Or Sign In With &mdash;</p>
+<div class="social d-flex text-center">
+<a href="#" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span> Facebook</a>
+<a href="#" class="px-2 py-2 ml-md-1 rounded"><span class="ion-logo-twitter mr-2"></span> Twitter</a>
+</div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script>
+        $(".toggle-password").click(function () {
+
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,3 +1,4 @@
+
 from flask import Flask,render_template,request,session,redirect
 from flask_sqlalchemy import SQLAlchemy
 import json
@@ -5,7 +6,8 @@ import os
 import math
 from datetime import date, datetime
 
-from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 
 
@@ -31,7 +33,9 @@ params={
     }
 app.config['UPLOAD_LOCATION'] =params['upload_location'];
 app.secret_key = 'super-secret-key'
-
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'userLogin'
 if(local_server):
     app.config['SQLALCHEMY_DATABASE_URI'] = params['local_uri'];
 else:
@@ -59,6 +63,18 @@ class Contacts(db.Model):
     def __repr__(self):
         return '<User %r>' % self.name
 
+class User(UserMixin,db.Model):
+    id = db.Column(db.Integer,primary_key = True)
+    username = db.Column(db.String(65000),nullable =  False)
+    useremail = db.Column(db.String(65000),nullable= False,unique=True)
+    userpassword = db.Column(db.String(65000),nullable = False)
+
+    def __repr__(self):
+        return '<User %r>' % self.useremail
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 class Post(db.Model):
@@ -114,8 +130,31 @@ def index():
     return render_template('index.html',params=params,posts=posts,next = next,prev=prev);
 @app.route("/home")
 def home():
-    posts = Post.query.filter_by().all()[0:params["no_of_posts"]];
-    return render_template('index.html',params=params,posts=posts);
+    posts = Post.query.filter_by().all();
+    last = math.ceil(len(posts)/int(params["no_of_posts"]));
+    
+
+    page = request.args.get('page');
+    if(not str(page).isnumeric()):
+        page = 1;
+
+    page = int(page);
+    
+    posts = posts[(page-1)*int(params["no_of_posts"]):(page-1)*int(params["no_of_posts"]) + int(params["no_of_posts"]) ]
+    if(page == 1):
+        prev = "#";
+        next = "?page=" + str(page+1);
+    
+    elif page == last:
+        next = "#";
+        prev = "?page=" + str(page-1);
+    else:
+        prev = "?page=" + str(page-1);
+        next = "?page=" + str(page+1);
+
+    
+    return render_template('index.html',params=params,posts=posts,next = next,prev=prev);
+
 @app.route("/about")
 def about():
     
@@ -151,6 +190,7 @@ def contact():
     return render_template('contact.html',success_msg = success_msg,params=params);
 
 @app.route("/post/<string:post_slug>",methods=['GET'])
+@login_required
 def post(post_slug):
     
     my_post = Post.query.filter_by(slug=post_slug).first();
@@ -237,6 +277,55 @@ def logout():
     session.pop('user')
     return redirect('/dashboard');
 
+@app.route('/userRegister', methods=['GET', 'POST'])
+def userRegister():
+    if request.method == "POST":
+        useremail = request.form.get('useremail');
+        userpassword = request.form.get('userpassword');
+        confirm_password = request.form.get('userpassword2');
+        username = request.form.get('username')
+
+    # if form.validate_on_submit():
+        hashed_password = generate_password_hash(userpassword, method='sha256')
+        new_user = User(username=username,useremail=useremail, userpassword=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect('userDashboard');
+    else:
+
+    #     return '<h1>New user has been created!</h1>'
+        #return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
+        return render_template('userRegister.html', params=params)
+
+@app.route('/userLogin', methods=['GET', 'POST'])
+def userLogin():
+    if request.method == "POST":
+        failure_message=None
+        useremail = request.form.get('useremail');
+        userpassword = request.form.get('userpassword'); 
+        user = User.query.filter_by(useremail = useremail).first()
+        print("hello this is what ",user)
+        if user:
+            if check_password_hash(user.userpassword, userpassword):
+                login_user(user)
+                return redirect('userDashboard')
+            else:
+                failure_message = "Invalid password or email"
+                user = user
+                return render_template('userLogin.html',failure_message=failure_message,user=user,email=useremail,password=userpassword)
+
+        else:
+            failure_message = "Invalid password or email"
+            return render_template('userLogin.html',failure_message=failure_message,user=user,email=useremail,password=userpassword)
+
+    # return '<h1>Invalid username or password</h1>'
+        #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
+    else:
+        if current_user.is_authenticated:
+            return redirect('userDashboard');
+        else:
+            return render_template('userLogin.html',params=params)
+
 @app.route("/delete/<string:post_id>",methods=['GET','POST'])
 def delete(post_id):
     if 'user' in session and session['user'] == params['admin_email']:
@@ -244,4 +333,43 @@ def delete(post_id):
         db.session.delete(post);
         db.session.commit();
         return redirect('/dashboard');
+@app.route("/userDashboard",methods=['GET','POST'])
+@login_required
+def userDashboard():
+    posts = Post.query.filter_by().all();
+    last = math.ceil(len(posts)/int(params["no_of_posts"]));
+    
 
+    page = request.args.get('page');
+    if(not str(page).isnumeric()):
+        page = 1;
+
+    page = int(page);
+    
+    posts = posts[(page-1)*int(params["no_of_posts"]):(page-1)*int(params["no_of_posts"]) + int(params["no_of_posts"]) ]
+    if(page == 1):
+        prev = "#";
+        next = "?page=" + str(page+1);
+    
+    elif page == last:
+        next = "#";
+        prev = "?page=" + str(page-1);
+    else:
+        prev = "?page=" + str(page-1);
+        next = "?page=" + str(page+1);
+
+    
+    return render_template('userDashboard.html',params=params,posts=posts,next = next,prev=prev);
+
+
+
+@app.route("/userProfile",methods=['GET','POST'])
+@login_required
+def userProfile():
+    return render_template('userProfile.html',params=params,user=current_user);
+
+@app.route('/userLogout')
+@login_required
+def userLogout():
+    logout_user()
+    return redirect('/home')
