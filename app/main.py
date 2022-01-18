@@ -390,7 +390,7 @@ def userAddPost():
         date = datetime.now();
         slug = title + str(date);
         img_file = 'https://unsplash.it/1920/1080/?random';
-        new_post = Post(title = title,content=content,tagline=tagline,userid=userid,by=by,date=date,slug = slug);
+        new_post = Post(title = title,content=content,tagline=tagline,userid=userid,by=by,date=date,slug = slug,img_file=img_file);
         db.session.add(new_post)
         db.session.commit()
         return redirect('userDashboard');
