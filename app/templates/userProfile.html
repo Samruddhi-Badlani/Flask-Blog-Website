@@ -4,14 +4,111 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Profile Section</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/userProfile.css')}}">
 </head>
 <body>
-    <h1>hello {{user.username}}</h1>
-    <a href="{{url_for('userLogout')}}"><button class="btn btn-primary">Logout</button></a>
+    <div class="vertical-nav bg-white" id="sidebar">
+        <div class="py-4 px-3 mb-4 bg-light">
+          <div class="media d-flex align-items-center">
+            <div class="media-body">
+              <h4 class="m-0">{{user.username}}</h4>
+              <a href="{{url_for('userLogout')}}"><button class="btn">Log out</button></a>
+              <!-- <p class="font-weight-light text-muted mb-0">Web developer</p> -->
+            </div>
+          </div>
+        </div>
+      
+        <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
+      
+        <ul class="nav flex-column bg-white mb-0">
+          <li class="nav-item">
+            <a href="{{url_for('userDashboard')}}" class="nav-link text-dark font-italic bg-light">
+                      <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
+                      Home
+                  </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{url_for('userAddPost')}}" class="nav-link text-dark font-italic">
+                      <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+                      Add a new post
+                  </a>
+          </li>
+          
+          <li class="nav-item">
+            <a href="{{url_for('viewUserPost')}}" class="nav-link text-dark font-italic">
+                      <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
+                      View my posts
+                  </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{url_for('editUserPost')}}" class="nav-link text-dark font-italic">
+                      <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+                      Edit existing posts
+                  </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{url_for('deleteUserPost')}}" class="nav-link text-dark font-italic">
+                      <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+                      Delete existing posts
+                  </a>
+          </li>
+        </ul>
+      
+        <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Charts</p>
+      
+        <!-- <ul class="nav flex-column bg-white mb-0">
+          <li class="nav-item">
+            <a href="#" class="nav-link text-dark font-italic">
+                      <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>
+                      Area charts
+                  </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link text-dark font-italic">
+                      <i class="fa fa-bar-chart mr-3 text-primary fa-fw"></i>
+                      Bar charts
+                  </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link text-dark font-italic">
+                      <i class="fa fa-pie-chart mr-3 text-primary fa-fw"></i>
+                      Pie charts
+                  </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link text-dark font-italic">
+                      <i class="fa fa-line-chart mr-3 text-primary fa-fw"></i>
+                      Line charts
+                  </a>
+          </li>
+        </ul> -->
+      </div>
+      <!-- End vertical navbar --> 
+      
+      <div class="page-content p-5" id="content">
+        <!-- Toggle button -->
+        <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i><small class="text-uppercase font-weight-bold">Toggle</small></button>
+      
+        <!-- Demo content -->
+
+        {% block body %}
+
+
+        {% endblock %}
+        
+      
+      </div>
+      <!-- End demo content -->
+      <script>
+      $(function() {
+        // Sidebar toggle behavior
+        $('#sidebarCollapse').on('click', function() {
+          $('#sidebar, #content').toggleClass('active');
+        });
+      });
+    </script>
 </body>
 </html>
-
-
-
-

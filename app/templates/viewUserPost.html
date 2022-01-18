@@ -1,0 +1,36 @@
+{% extends "userProfile.html" %}
+
+
+{% block body %}
+{% if notYet > 0 %}
+{% for post in posts %}
+                <a href="/post/{{post.slug}}" style="display: block; height: auto;width: auto; color: white;">
+                    <div class="post-preview">
+                        
+                            <h3 class="post-title">{{post.title}}</h2>
+                            
+                        
+                        <h4 class="post-subtitle">{{post.tagline}}</h3>
+                        <p class="post-meta">
+                            Posted by
+                            {{post.by}}
+                            on {{post.date}}
+                        </p>
+                    </div>
+                    {{post.content[0:150]}}...
+                </a>
+                
+                    <!-- Divider-->
+                  
+                   
+               
+                    <!-- Divider-->
+                    <hr class="my-4" />
+
+            {% endfor %} 
+            {% endif %}  
+
+{% if notYet == 0 %}  
+<h3>You have not posted anything yet!!</h3>
+{% endif %}
+{% endblock %}

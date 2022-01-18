@@ -1,0 +1,58 @@
+{% extends "userProfile.html" %}
+
+
+{% block body %}
+{% if notYet > 0 %}
+
+
+<div class="container py-4">
+    <!-- <h5>Bootstrap 4 full click cards...</h5> -->
+    <div class="card-deck-wrapper">
+        <div class="card-deck">
+            {% for post in posts %}
+            <div class="card p-2">
+                
+                    <h4 class="card-title">{{post.title}}</h4>
+                    <p class="card-text">{{post.tagline}}</p>
+                    <p class="card-text"> {{post.content[0:150]}}...</p>
+                   
+                    <p class="card-text"><small class="text-muted">Posted by
+                        {{post.by}}
+                        on {{post.date}}</small></p>
+                        <form action="/deletePostForm/{{post.post_id}}" method="post">
+                           
+                                <input class="btn btn-danger"  TYPE='submit' name='delete' value="Delete this post" onClick='return confirmSubmit()'> </button>
+                        
+                                   
+                        </form>
+               
+            </div>
+            {% endfor %} 
+            
+        </div>
+    </div>
+
+    <script>
+        function confirmSubmit()
+    {
+    var agree=confirm("Are you sure you wish to continue?");
+    if (agree)
+     return true ;
+    else
+     return false ;
+    }
+    </script>
+</div>
+      
+{% endif %}     
+  
+ 
+
+{% if notYet == 0 %}  
+<h3>You have not posted anything yet!!</h3>
+{% endif %}
+
+
+</div>
+
+{% endblock %}

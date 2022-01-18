@@ -1,7 +1,7 @@
 
 
 
-from flask import Flask,render_template,request,session,redirect
+from flask import Flask,render_template,request,session,redirect,url_for
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
@@ -397,3 +397,70 @@ def userAddPost():
     else:
         post = "xyz"
         return render_template('userAddPost.html',user=current_user,post =post );
+
+
+@app.route('/viewUserPost',methods=['GET','POST'])
+@login_required
+def viewUserPost():
+    posts = "notYet"
+    posts = Post.query.filter_by(userid=current_user.id).all();
+    notYet = Post.query.filter_by(userid=current_user.id).count();
+    return render_template('viewUserPost.html',params=params,user=current_user,posts=posts,notYet= notYet);
+
+
+
+@app.route('/editUserPost',methods=['GET','POST'])
+@login_required
+def editUserPost():
+    posts = "notYet"
+    posts = Post.query.filter_by(userid=current_user.id).all();
+    notYet = Post.query.filter_by(userid=current_user.id).count();
+    return render_template('editUserPost.html',params=params,user=current_user,posts=posts,notYet= notYet);
+
+
+
+@app.route("/editPostForm/<string:post_id>",methods=['GET','POST'])
+@login_required
+def editPostForm(post_id):
+    if request.method == "POST":
+        title = request.form.get('title');
+        content = request.form.get('content');
+        tagline = request.form.get('tagline');
+        post = Post.query.filter_by(post_id = post_id).first();
+        post.title = title;
+        post.tagline = tagline;
+       
+        post.content = content;
+
+        db.session.commit();
+
+        return render_template('userProfile.html',params=params,user=current_user);
+    else:
+        post = Post.query.filter_by(post_id = post_id).first();
+        return render_template('editPostForm.html',post = post,params=params,user = current_user)
+
+@app.route("/deleteUserPost",methods=['GET','POST'])
+@login_required
+def deleteUserPost():
+    posts = "notYet"
+    posts = Post.query.filter_by(userid=current_user.id).all();
+    notYet = Post.query.filter_by(userid=current_user.id).count();
+    return render_template('deleteUserPost.html',params=params,user=current_user,posts=posts,notYet= notYet);
+
+
+
+@app.route("/deletePostForm/<string:post_id>",methods=['GET','POST'])
+@login_required
+def deletePostForm(post_id):
+    if request.method == "POST":
+        
+        post = Post.query.filter_by(post_id = post_id).first();
+        
+       
+        db.session.delete(post);
+
+        db.session.commit();
+
+        return redirect(url_for('deleteUserPost'));
+    else:
+        return render_template('userProfile.html',params=params,user=current_user);
