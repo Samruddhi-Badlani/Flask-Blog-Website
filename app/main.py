@@ -1,4 +1,6 @@
 
+
+from turtle import title
 from flask import Flask,render_template,request,session,redirect
 from flask_sqlalchemy import SQLAlchemy
 import json
@@ -68,7 +70,7 @@ class User(UserMixin,db.Model):
     username = db.Column(db.String(65000),nullable =  False)
     useremail = db.Column(db.String(65000),nullable= False,unique=True)
     userpassword = db.Column(db.String(65000),nullable = False)
-
+    posts = db.relationship('Post', backref='user', lazy=True)
     def __repr__(self):
         return '<User %r>' % self.useremail
 
@@ -94,8 +96,10 @@ class Post(db.Model):
     by = db.Column(db.String(100),nullable = False)
     slug = db.Column(db.String(200),nullable = False)
     date = db.Column(db.Date,nullable = True)
-    img_file = db.Column(db.String(300),nullable = False)
+    img_file = db.Column(db.String(300),nullable = True)
     tagline = db.Column(db.String(300),nullable = False)
+    userid = db.Column(db.Integer, db.ForeignKey('user.id'),
+        nullable=True)
 
     def __repr__(self):
         return '<User %r>' % self.title
@@ -373,3 +377,23 @@ def userProfile():
 def userLogout():
     logout_user()
     return redirect('/home')
+
+@app.route('/userAddPost',methods=['GET','POST'])
+@login_required
+def userAddPost():
+    if request.method == "POST":
+        title = request.form.get('title');
+        content = request.form.get('content');
+        tagline = request.form.get('tagline');
+        userid = current_user.id;
+        by = current_user.username;
+        date = datetime.now();
+        slug = title + str(date);
+        img_file = 'https://unsplash.it/1920/1080/?random';
+        new_post = Post(title = title,content=content,tagline=tagline,userid=userid,by=by,date=date,slug = slug);
+        db.session.add(new_post)
+        db.session.commit()
+        return redirect('userDashboard');
+    else:
+        post = "xyz"
+        return render_template('userAddPost.html',user=current_user,post =post );

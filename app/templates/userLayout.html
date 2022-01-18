@@ -34,7 +34,9 @@
                       
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('contact')}}">Contact</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('userProfile')}}"><i class="fa fa-user fa-2x"></i> 
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" data-toggle="tooltip" title="Add a Post" href="{{url_for('userAddPost')}}"><i class="fa fa-plus fa-2x"></i> 
                            </a></li>
+                           <!-- <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4 btn btn-dark" href="{{url_for('about')}}">Add your post</a></li> -->
                     </ul> 
                 </div>
             </div>
@@ -84,4 +86,9 @@
         <!-- Core theme JS-->
         <script src="{{url_for('static',filename='js/scripts.js') }}"></script>
     </body>
+    <script>
+        $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();
+        });
+        </script>
 </html>

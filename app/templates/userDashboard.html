@@ -2,7 +2,8 @@
 
 
 {% block body %}
-<header class="masthead" style="background-image: url('../static/assets/img/home-bg.jpg')">
+<!-- background: #222 url('https://unsplash.it/1920/1080/?random') center center no-repeat; -->
+<header class="masthead" style="background-image: url('https://unsplash.it/1920/1080/?random')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
@@ -15,10 +16,13 @@
     </div>
 </header>
 <!-- Main Content-->
+
+<!-- <button type="button" class="btn btn-primary btn-lg btn-block">Add your post here!!</button> -->
 <div class="container px-4 px-lg-5">
+  
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
-
+            
             <!-- Post fetched from database  -->
             <!-- Post preview-->
         {% for post in posts %}
@@ -31,12 +35,14 @@
                 <h4 class="post-subtitle">{{post.tagline}}</h3>
                 <p class="post-meta">
                     Posted by
-                    {{post.By}}
-                    on {{post.Date}}
+                    {{post.by}}
+                    on {{post.date}}
                 </p>
             </div>
             {{post.content[0:150]}}...
         </a>
+
+        
             <!-- Divider-->
           
            
