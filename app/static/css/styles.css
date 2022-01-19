@@ -11294,16 +11294,6 @@ header.masthead .site-heading .h1 {
   width: 50%
 }
 
-body {
-  background-color: black
-}
-
-#nav-items li a,
-#profile {
-  text-decoration: none;
-  color: rgb(224, 219, 219);
-  background-color: black
-}
 
 .comments {
   margin-top: 5%;
@@ -11344,46 +11334,4 @@ body {
   color: rgb(184, 183, 183)
 }
 
-h1,
-h4 {
-  color: white;
-  font-weight: bold
-}
 
-label {
-  color: rgb(212, 208, 208)
-}
-
-#align-form {
-  margin-top: 20px
-}
-
-.form-group p a {
-  color: white
-}
-
-#checkbx {
-  background-color: black
-}
-
-#darker img {
-  margin-right: 15px;
-  position: static
-}
-
-.form-group input,
-.form-group textarea {
-  background-color: black;
-  display: block;
-  border: 1px solid rgba(16, 46, 46, 1);
-  border-radius: 12px;
-  width: 350px;
-  height: 30px;
-}
-
-form {
-  border: 1px solid rgba(16, 46, 46, 1);
-  background-color: rgba(16, 46, 46, 0.973);
-  border-radius: 5px;
-  padding: 20px
-}
