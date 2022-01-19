@@ -23,15 +23,13 @@ local_server = False
 params={
         "local_server":"True",
         "local_uri":"postgresql://postgres:root@localhost:5432/blogapp",
-        "prod_uri":"postgresql://fdgzcmqclwmihe:4cbb4d1e9b93cdb6accf6969587fd733663f055e5dd92b62e336c29608e7d64a@ec2-3-213-76-170.compute-1.amazonaws.com:5432/dbm28fbdipl0gk",
+        
         "hackerrank_uri":"https://www.hackerrank.com/samruddhi_09",
         "github_uri":"https://github.com/Samruddhi-Badlani",
         "linkedin_uri":"https://www.linkedin.com/in/samruddhi-badlani-872262193/",
         "no_of_posts":2,
         "blog_name":"Samruddhi's Blog Channel",
-        "admin_email":"admin_email_id_here@gmail.com",
-        "admin_pass":"admin_password_here",
-        "upload_location" :"your_upload_location"
+       
        
     }
 app.config['UPLOAD_LOCATION'] =params['upload_location'];
@@ -332,13 +330,7 @@ def edit(post_id):
         return render_template('edit.html',params=params,posts=posts,post_id=post_id,success_msg = success_msg,post= post)
 
 
-# @app.route("/uploader",methods=['GET','POST'])
-# def uploader():
-#     if 'user' in session and session['user'] == params['admin_email']:
-#         if request.method == "POST":
-#             myFile = request.files['myFile'];
-#             myFile.save(os.path.join(app.config['UPLOAD_LOCATION'],secure_filename(myFile.filename)))
-#         return "Uploaded successfully"
+
 
 
 @app.route("/logout",methods=['GET','POST'])
