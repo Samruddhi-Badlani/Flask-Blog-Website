@@ -1,6 +1,7 @@
 
 
 
+
 from flask import Flask,render_template,request,session,redirect,url_for
 from flask_sqlalchemy import SQLAlchemy
 import json
@@ -71,6 +72,48 @@ class User(UserMixin,db.Model):
     useremail = db.Column(db.String(65000),nullable= False,unique=True)
     userpassword = db.Column(db.String(65000),nullable = False)
     posts = db.relationship('Post', backref='user', lazy=True)
+    liked = db.relationship(
+        'PostLike',
+        foreign_keys='PostLike.userid',
+        backref='user', lazy='dynamic')
+
+    commented = db.relationship(
+        'PostComment',
+        foreign_keys='PostComment.userid',
+        backref='user', lazy='dynamic')
+    def like_post(self, post):
+        if not self.has_liked_post(post):
+            like = PostLike(userid=self.id, post_id=post.post_id)
+            db.session.add(like)
+    
+
+    def unlike_post(self, post):
+        if self.has_liked_post(post):
+            PostLike.query.filter_by(
+                userid=self.id,
+                post_id=post.post_id).delete()
+
+    def has_liked_post(self, post):
+        return PostLike.query.filter(
+            PostLike.userid == self.id,
+            PostLike.post_id == post.post_id).count() > 0
+
+    def comment_post(self, post,comment_data):
+       
+        comment = PostComment(userid=self.id, post_id=post.post_id,comment_data=comment_data)
+        db.session.add(comment)
+
+    def uncomment_post(self, post,comment_id):
+        if self.has_commented_post(self,post,comment_id):
+            PostLike.query.filter_by(
+                userid=self.id,
+                post_id=post.post_id).delete()
+
+    def has_commented_post(self, post,comment_id):
+        return PostComment.query.filter(
+            PostComment.userid == self.id,
+            PostComment.id == comment_id,
+            PostComment.post_id == post.post_id).count() > 0
     def __repr__(self):
         return '<User %r>' % self.useremail
 
@@ -101,10 +144,32 @@ class Post(db.Model):
     userid = db.Column(db.Integer, db.ForeignKey('user.id'),
         nullable=True)
 
+    likes = db.relationship('PostLike', backref='post', lazy='dynamic')
+
+    comments = db.relationship('PostComment', backref='post', lazy='dynamic')
+
     def __repr__(self):
         return '<User %r>' % self.title
 
 
+class PostLike(db.Model):
+    __tablename__ = 'post_like'
+    id = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'))
+
+    def __repr__(self):
+        return '<User %r>' % self.id
+
+class PostComment(db.Model):
+    __tablename__ = 'post_comment'
+    id = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'))
+    comment_data = db.Column(db.String(65000),nullable = False)
+
+    def __repr__(self):
+        return '<User %r>' % self.id
 
 @app.route("/")
 def index():
@@ -362,8 +427,11 @@ def userDashboard():
         prev = "?page=" + str(page-1);
         next = "?page=" + str(page+1);
 
+
+    comments = PostComment.query.filter_by().all();
+
     
-    return render_template('userDashboard.html',params=params,posts=posts,next = next,prev=prev);
+    return render_template('userDashboard.html',params=params,posts=posts,next = next,prev=prev,current_user=current_user,comments=comments);
 
 
 
@@ -464,3 +532,34 @@ def deletePostForm(post_id):
         return redirect(url_for('deleteUserPost'));
     else:
         return render_template('userProfile.html',params=params,user=current_user);
+
+
+@app.route('/like/<int:post_id>/<action>')
+@login_required
+def like_action(post_id, action):
+    post = Post.query.filter_by(post_id=post_id).first_or_404()
+    if action == 'like':
+        current_user.like_post(post)
+        db.session.commit()
+    if action == 'unlike':
+        current_user.unlike_post(post)
+        db.session.commit()
+    return redirect(request.referrer)
+
+
+@app.route('/comment/<int:post_id>/<action>',methods=['GET','POST'])
+@login_required
+def comment_action(post_id, action):
+
+    if request.method == 'POST':
+        post = Post.query.filter_by(post_id=post_id).first_or_404()
+        comment_data = request.form.get('comment_data')
+        if action == 'comment':
+            current_user.comment_post(post,comment_data)
+            db.session.commit()
+        if action == 'uncomment':
+            current_user.uncomment_post(post)
+            db.session.commit()
+        return redirect(request.referrer)
+    else:
+        return redirect(url_for('userDashboard'));

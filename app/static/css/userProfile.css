@@ -79,5 +79,7 @@
       height: auto;
       width: auto;
   }
-
+  .fa-thumbs-up {
+    color: red;
+  }
 

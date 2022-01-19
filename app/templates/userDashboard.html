@@ -40,7 +40,49 @@
                 </p>
             </div>
             {{post.content[0:150]}}...
+
+
         </a>
+        {% if current_user.has_liked_post(post) %}
+    <a href="{{ url_for('like_action', post_id=post.post_id, action='unlike') }}" style="color: red;"><i class="fa fa-thumbs-up redincolor" aria-hidden="false"></i></a>
+  {% else %}
+    <a href="{{ url_for('like_action', post_id=post.post_id, action='like') }} " style="color: grey;"><i class="fa fa-thumbs-up redincolor" aria-hidden="false"></i></a>
+  {% endif %}
+
+ 
+  {{ post.likes.count() }} likes
+  <div class="container">
+    <div class="row">
+  <div class="col-sm-5 col-md-6 col-12 pb-4">
+    <h4>Comments</h1>
+    {% for comment in comments %}
+    {%if  comment.post_id == post.post_id %}
+    <div class="comment mt-4 text-justify float-left"> 
+        
+        <p>{{comment.comment_data }}</p>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+</div>
+<div class="row">
+<div class="col-sm-5 col-md-6 col-12 pb-4">
+    <form id="algin-form" action="{{ url_for('comment_action', post_id=post.post_id,action='comment') }}" method="post">
+        <div class="form-group">
+            <h4>Leave a comment</h4> <label for="comment_data">Message</label> <textarea style="width: 500px; height: 80px; background-color: black; color: white;" name="comment_data" id="" msg cols="30" rows="5" class="form-group"></textarea>
+        </div>
+        
+       
+        
+        <div class="form-group"> <button type="submit" id="post" class="btn">Post Comment</button> </div>
+    </form>
+</div>
+</div>
+</div>
+<!-- <form action="{{ url_for('comment_action', post_id=post.post_id,action='comment') }}" method="post">
+    <input type="text" name='comment_data'>
+    <input type="submit" value="Comment">
+</form> -->
 
         
             <!-- Divider-->
